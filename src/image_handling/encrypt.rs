@@ -3,15 +3,13 @@ pub fn encrypt_channel<F>(
     ct_channel: &mut [u8],
     key_matrix: &[[u8; 16]; 16],
     paring_fn: F,
-    is_first_half: bool,
 ) where
     F : Fn(usize, &[u8]) -> ((u8, u8), (usize, usize))
 {
     let len = pt_channel.len();
     assert_eq!(len % 2, 0, "Channel length must be even");
 
-    let range = if is_first_half { 0..(len/2) } else { (len/2)..len };
-    for i in range {
+    for i in 0..(len/2) {
         // Get the pair of pixels to encrypt.
         let ((p1, p2), (idx1, idx2)) = paring_fn(i, &pt_channel);
         let (row1, col1) = find_position(p1, key_matrix);

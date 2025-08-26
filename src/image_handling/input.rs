@@ -40,18 +40,18 @@ pub fn encrypt_and_save_output(path: &str, keyimg_path: Option<String>, output_p
     // Apply encryption to each channel separately, concurrently.
     thread::scope(|s| {
         s.spawn(|| {
-            encrypt::encrypt_channel(&pt_img_rc, &mut ct_img_rc, &key_matrix, pairing::halfway_pairing, true);
-            encrypt::encrypt_channel(&pt_img_rc, &mut ct_img_rc, &key_matrix, pairing::opposite_pairing, false);
+            // encrypt::encrypt_channel(&pt_img_rc, &mut ct_img_rc, &key_matrix, pairing::halfway_pairing);
+            encrypt::encrypt_channel(&pt_img_rc, &mut ct_img_rc, &key_matrix, pairing::random_pairing);
         });
 
         s.spawn(|| {
-            encrypt::encrypt_channel(&pt_img_gc, &mut ct_img_gc, &key_matrix, pairing::random_pairing, true);
-            encrypt::encrypt_channel(&pt_img_gc, &mut ct_img_gc, &key_matrix, pairing::sequential_pairing, false);
+            // encrypt::encrypt_channel(&pt_img_gc, &mut ct_img_gc, &key_matrix, pairing::sequential_pairing);
+            encrypt::encrypt_channel(&pt_img_gc, &mut ct_img_gc, &key_matrix, pairing::random_pairing);
         });
 
         s.spawn(|| {
-            encrypt::encrypt_channel(&pt_img_bc, &mut ct_img_bc, &key_matrix, pairing::opposite_pairing, true);
-            encrypt::encrypt_channel(&pt_img_bc, &mut ct_img_bc, &key_matrix, pairing::random_pairing, false);
+            // encrypt::encrypt_channel(&pt_img_bc, &mut ct_img_bc, &key_matrix, pairing::opposite_pairing);
+            encrypt::encrypt_channel(&pt_img_bc, &mut ct_img_bc, &key_matrix, pairing::random_pairing);
         });
     });
 
